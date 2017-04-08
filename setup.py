@@ -8,7 +8,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     sys.exit()
@@ -42,6 +41,7 @@ setup(
         'libsass==0.10.0',
         'submarine==1.0.5',
         'chardet',
+        'youtube-dl=2017.4.3',
     ],
     license='MIT',
     zip_safe=False,
