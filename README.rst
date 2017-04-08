@@ -12,6 +12,31 @@ ka-lite-zim
 OpenZIM export command for ka-lite.
 
 
+Quick Start
+-----------
+
+Current code base is tied to version 0.15.1 of KA-Lite which fails to install from non-prehistoric pip.
+
+::
+
+    virtualenv -p /usr/bin/python2.7 kalite-env
+    source kalite-env
+    git clone https://github.com/learningequality/ka-lite.git
+    cd ka-lite/
+    sed -i "" "s/os.path.join(where_am_i, 'kalitectl.py')/'kalitectl.py'/" setup.py
+    make install
+    cd ..
+    git clone https://github.com/openzim/kalite
+    cd kalite
+    pip install -e .
+
+Export script is launched via ``kalite manage export2zim``
+
+Usage is available at ``kalite manage help export2zim``
+
+**Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr``
+
+
 Features
 --------
 
