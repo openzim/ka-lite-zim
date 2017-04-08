@@ -49,6 +49,16 @@ def compressor_init(input_dir):
     settings.COMPRESS_CSS_FILTERS = []
 
 
+def safe_link(src, dst):
+    """ create a link if filesystem supports it otherwise copy """
+    try:
+        os.link(src, dst)
+    except OSError as exp:
+        # Operation not supported (filesystem cannot hard link?)
+        if exp.errno == 45:
+            shutil.copyfile(src, dst)
+
+
 class Command(BaseCommand):
     args = ('zimfile')
     help = 'Export video and meta data of your KA Lite installation to OpenZim'  # @ReservedAssignment
@@ -295,7 +305,8 @@ class Command(BaseCommand):
                         node['content']['format'] = "webm"
                     else:
                         # If not transcoding, just link the original file
-                        os.link(video_file_src, video_file_dest)
+                        if not os.path.exists(video_file_dest):
+                            safe_link(video_file_src, video_file_dest)
                     node["video_url"] = os.path.join(
                         node["path"],
                         video_file_name
@@ -320,7 +331,7 @@ class Command(BaseCommand):
                             node['id'] + '.png'
                         )
                         if not os.path.exists(thumb_file_dest):
-                            os.link(thumb_file_src, thumb_file_dest)
+                            safe_link(thumb_file_src, thumb_file_dest)
                     else:
                         node["thumbnail_url"] = None
 
