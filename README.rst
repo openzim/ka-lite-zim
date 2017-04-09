@@ -26,6 +26,8 @@ Current code base is tied to version 0.15.1 of KA-Lite which fails to install fr
     sed -i "" "s/os.path.join(where_am_i, 'kalitectl.py')/'kalitectl.py'/" setup.py
     make install
     cd ..
+    mkdir -p ~/.kalite
+    echo "from kalite.project.settings.base import *\n\nINSTALLED_APPS += ['kalite_zim', 'compressor',]\n" >> ~/.kalite/settings.py
     git clone https://github.com/openzim/kalite
     cd kalite
     pip install -e .
@@ -35,6 +37,14 @@ Export script is launched via ``kalite manage export2zim``
 Usage is available at ``kalite manage help export2zim``
 
 **Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr``
+
+**Note**: if using the Docker ``zimwriterfs``, make sure to work off the same absolute path of your docker volume (/data for example) for symlinks can be resolved.
+
+::
+
+	ln -s /data/ /home/user/kalite
+	kalite manage export2zim /data/ka-fr.zim --language=fr --tmp-dir=/data/ka-lite-zim_fr
+	docker run --name zimwriterfs -v /data:/data openzim/zimwriterfs zimwriterfs XXX
 
 
 Features
