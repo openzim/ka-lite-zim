@@ -31,6 +31,8 @@ from kalite_zim.anythumbnailer.thumbnail_ import create_thumbnail
 from distutils.spawn import find_executable
 
 YOUTUBE_URL = "https://www.youtube.com/watch?v={id}"
+COPIED_FILES = {}
+
 
 def compressor_init(input_dir):
 
@@ -49,14 +51,27 @@ def compressor_init(input_dir):
     settings.COMPRESS_CSS_FILTERS = []
 
 
-def safe_link(src, dst):
+def soft_link(src, dst):
     """ create a link if filesystem supports it otherwise copy """
+    return os.symlink(src, dst)
+
+
+def hard_link(src, dst):
     try:
         os.link(src, dst)
     except OSError as exp:
         # Operation not supported (filesystem cannot hard link?)
         if exp.errno == 45:
             shutil.copyfile(src, dst)
+
+def copy_file(src, dst):
+    if src not in COPIED_FILES.keys():
+        # copy it first properly
+        hard_link(src, dst)
+        COPIED_FILES[src] = dst
+    else:
+        # we already have a hard copy, let's symlink to it
+        soft_link(COPIED_FILES.get(src), dst)
 
 
 class Command(BaseCommand):
@@ -306,7 +321,7 @@ class Command(BaseCommand):
                     else:
                         # If not transcoding, just link the original file
                         if not os.path.exists(video_file_dest):
-                            safe_link(video_file_src, video_file_dest)
+                            copy_file(video_file_src, video_file_dest)
                     node["video_url"] = os.path.join(
                         node["path"],
                         video_file_name
@@ -331,7 +346,7 @@ class Command(BaseCommand):
                             node['id'] + '.png'
                         )
                         if not os.path.exists(thumb_file_dest):
-                            safe_link(thumb_file_src, thumb_file_dest)
+                            copy_file(thumb_file_src, thumb_file_dest)
                     else:
                         node["thumbnail_url"] = None
 
