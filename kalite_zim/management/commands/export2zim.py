@@ -16,6 +16,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
+from iso639 import languages as iso_languages
 
 from kalite.topic_tools import settings as topic_tools_settings, \
     get_content_cache, get_exercise_cache
@@ -467,9 +468,8 @@ class Command(BaseCommand):
             "--favicon", "static/img/ka_leaf.png",
             "--publisher", publisher,
             "--creator", "KhanAcademy.org",
-            "--description", "Khan Academy ({})".format(language),
-            "--description", "Videos from Khan Academy",
-            "--language", language,
+            "--description", "Videos from Khan Academy ({})".format(language),
+            "--language", iso_languages.get(alpha2=language,).part3,
             tmp_dir,
             dest_file,
         )
