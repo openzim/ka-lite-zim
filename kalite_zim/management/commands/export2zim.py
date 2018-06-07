@@ -283,10 +283,13 @@ class Command(BaseCommand):
                 node_dir = os.path.join(tmp_dir, node["path"])
                 if not os.path.exists(node_dir):
                     os.makedirs(node_dir)
+                videos_dir = os.path.join(tmp_dir, "videos")
+                if not os.path.exists(videos_dir):
+                    os.makedirs(videos_dir)
                 video_file_name = node['id'] + '.' + node['content']['format']
                 thumb_file_name = node['id'] + '.png'
                 video_file_src = os.path.join(CONTENT_ROOT, video_file_name)
-                video_file_dest = os.path.join(node_dir, video_file_name)
+                video_file_dest = os.path.join(videos_dir, video_file_name)
                 thumb_file_src = os.path.join(CONTENT_ROOT, thumb_file_name)
                 thumb_file_dest = os.path.join(node_dir, thumb_file_name)
 
@@ -302,13 +305,13 @@ class Command(BaseCommand):
                     if transcode2webm:
                         video_mp4_file_name = node['id'] + '.mp4'
                         video_file_name = node['id'] + '.webm'
-                        video_file_dest = os.path.join(node_dir, video_file_name)
-                        if os.path.isfile(video_file_dest):
-                            logger.info("Already encoded: {}".format(video_file_dest))
+                        video_file_dest = os.path.join(videos_dir, video_file_name)
+                        if os.path.isfile(os.path.join(CONTENT_ROOT,video_file_name)):
+                            logger.info("Already encoded: {}".format(os.path.join(CONTENT_ROOT,video_file_name)))
                         else:
                             yt_video_url = YOUTUBE_URL.format(
                                 id=node['content']['youtube_id'])
-                            cmd = ['youtube-dl', '-o', video_mp4_file_name,
+                            cmd = ['youtube-dl', '-o', video_file_src,
                                    '-f', 'mp4',
                                    '--recode-video', 'webm', '-k',
                                    yt_video_url]
@@ -318,13 +321,13 @@ class Command(BaseCommand):
                                 logger.error("Error invoking ffmpeg: {}".format((_stderr_data or "") + (stdout_data or "")))
                                 logger.error("Command was: {}".format(" ".join(cmd)))
                                 raise CommandError("Could not complete transcoding")
+                        video_file_src = os.path.join(CONTENT_ROOT, video_file_name)
                         node['content']['format'] = "webm"
-                    else:
-                        # If not transcoding, just link the original file
-                        if not os.path.exists(video_file_dest):
-                            copy_file(video_file_src, video_file_dest)
+
+                    if not os.path.exists(video_file_dest):
+                        copy_file(video_file_src, video_file_dest)
                     node["video_url"] = os.path.join(
-                        node["path"],
+                        "videos",
                         video_file_name
                     )
                     copy_media.videos_found += 1
