@@ -41,7 +41,7 @@ setup(
         'libsass==0.10.0',
         'submarine==1.0.5',
         'chardet',
-        'youtube-dl=2017.4.3',
+        'youtube-dl==2017.4.3',
         'iso-639==0.4.5',
     ],
     license='MIT',
