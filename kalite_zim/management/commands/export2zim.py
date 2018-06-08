@@ -280,18 +280,23 @@ class Command(BaseCommand):
 
                 # Available is False by default until we locate the file
                 node["content"]["available"] = False
-                node_dir = os.path.join(tmp_dir, node["path"])
-                if not os.path.exists(node_dir):
-                    os.makedirs(node_dir)
+                subtitle_dir = os.path.join(tmp_dir, "subtitle")
+                if not os.path.exists(subtitle_dir):
+                    os.makedirs(subtitle_dir)
+
                 videos_dir = os.path.join(tmp_dir, "videos")
                 if not os.path.exists(videos_dir):
                     os.makedirs(videos_dir)
                 video_file_name = node['id'] + '.' + node['content']['format']
-                thumb_file_name = node['id'] + '.png'
                 video_file_src = os.path.join(CONTENT_ROOT, video_file_name)
                 video_file_dest = os.path.join(videos_dir, video_file_name)
+
+                thumb_dir = os.path.join(tmp_dir, "thumb")
+                if not os.path.exists(thumb_dir):
+                    os.makedirs(thumb_dir)
+                thumb_file_name = node['id'] + '.png'
                 thumb_file_src = os.path.join(CONTENT_ROOT, thumb_file_name)
-                thumb_file_dest = os.path.join(node_dir, thumb_file_name)
+                thumb_file_dest = os.path.join(thumb_dir, thumb_file_name)
 
                 if options['download'] and not os.path.exists(video_file_src):
                     logger.info("Video file being downloaded to: {}".format(video_file_src))
@@ -346,7 +351,7 @@ class Command(BaseCommand):
                     # Handle thumbnail
                     if os.path.exists(thumb_file_src):
                         node["thumbnail_url"] = os.path.join(
-                            node["path"],
+                            "thumb",
                             node['id'] + '.png'
                         )
                         if not os.path.exists(thumb_file_dest):
@@ -360,7 +365,7 @@ class Command(BaseCommand):
                     )
                     if os.path.isfile(subtitle_srt):
                         subtitle_vtt = os.path.join(
-                            node_dir,
+                            subtitle_dir,
                             node['id'] + '.vtt'
                         )
                         # Convert to .vtt because this format is understood
@@ -372,7 +377,7 @@ class Command(BaseCommand):
                         else:
                             logger.info("Subtitle convert from SRT to VTT: {}".format(subtitle_vtt))
                             node["subtitle_url"] = os.path.join(
-                                node["path"],
+                                "subtitle",
                                 node['id'] + '.vtt'
                             )
 
