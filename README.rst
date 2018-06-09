@@ -20,7 +20,7 @@ Current code base is tied to version 0.15.1 of KA-Lite which fails to install fr
 ::
 
     virtualenv -p /usr/bin/python2.7 kalite-env
-    source kalite-env
+    source kalite-env/bin/activate
     git clone https://github.com/learningequality/ka-lite.git
     cd ka-lite/
     sed -i "" "s/os.path.join(where_am_i, 'kalitectl.py')/'kalitectl.py'/" setup.py
