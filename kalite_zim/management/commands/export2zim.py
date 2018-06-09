@@ -287,7 +287,10 @@ class Command(BaseCommand):
                 videos_dir = os.path.join(tmp_dir, "videos")
                 if not os.path.exists(videos_dir):
                     os.makedirs(videos_dir)
-                video_file_name = node['id'] + '.' + node['content']['format']
+                if transcode2webm:
+                    video_file_name = node['id'] + '.' + 'webm'
+                else:
+                    video_file_name = node['id'] + '.' + node['content']['format']
                 video_file_src = os.path.join(CONTENT_ROOT, video_file_name)
                 video_file_dest = os.path.join(videos_dir, video_file_name)
 
@@ -300,35 +303,28 @@ class Command(BaseCommand):
 
                 if options['download'] and not os.path.exists(video_file_src):
                     logger.info("Video file being downloaded to: {}".format(video_file_src))
-                    download_video(
-                        node['content']['youtube_id'],
-                        node['content']['format'],
-                        CONTENT_ROOT,
-                    )
+                    if transcode2webm:
+                        yt_video_url = YOUTUBE_URL.format(
+                            id=node['content']['youtube_id'])
+                        cmd = ['youtube-dl', '-o', video_file_src,
+                                '-f', 'webm/mp4',
+                                '--recode-video', 'webm', '-k',
+                                yt_video_url]
+                        process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+                        stdout_data, _stderr_data = process.communicate()
+                        if process.returncode != 0:
+                            logger.error("Error invoking ffmpeg: {}".format((_stderr_data or "") + (stdout_data or "")))
+                            logger.error("Command was: {}".format(" ".join(cmd)))
+                            raise CommandError("Could not complete transcoding")
+                        node['content']['format'] = "webm"
+                    else:
+                        download_video(
+                            node['content']['youtube_id'],
+                            node['content']['format'],
+                            CONTENT_ROOT,
+                        )
 
                 if os.path.exists(video_file_src):
-                    if transcode2webm:
-                        video_mp4_file_name = node['id'] + '.mp4'
-                        video_file_name = node['id'] + '.webm'
-                        video_file_dest = os.path.join(videos_dir, video_file_name)
-                        if os.path.isfile(os.path.join(CONTENT_ROOT,video_file_name)):
-                            logger.info("Already encoded: {}".format(os.path.join(CONTENT_ROOT,video_file_name)))
-                        else:
-                            yt_video_url = YOUTUBE_URL.format(
-                                id=node['content']['youtube_id'])
-                            cmd = ['youtube-dl', '-o', video_file_src,
-                                   '-f', 'mp4',
-                                   '--recode-video', 'webm', '-k',
-                                   yt_video_url]
-                            process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-                            stdout_data, _stderr_data = process.communicate()
-                            if process.returncode != 0:
-                                logger.error("Error invoking ffmpeg: {}".format((_stderr_data or "") + (stdout_data or "")))
-                                logger.error("Command was: {}".format(" ".join(cmd)))
-                                raise CommandError("Could not complete transcoding")
-                        video_file_src = os.path.join(CONTENT_ROOT, video_file_name)
-                        node['content']['format'] = "webm"
-
                     if not os.path.exists(video_file_dest):
                         copy_file(video_file_src, video_file_dest)
                     node["video_url"] = os.path.join(
