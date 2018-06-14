@@ -15,22 +15,21 @@ OpenZIM export command for ka-lite.
 Quick Start
 -----------
 
-Current code base is tied to version 0.15.1 of KA-Lite which fails to install from non-prehistoric pip.
+Current code base is tied to version 0.15.1 of KA-Lite which fails to install from non-prehistoric pip, so we use prehistoric pip in virtualenv. Or you can also use our docker openzim/kalite.
 
 ::
 
     virtualenv -p /usr/bin/python2.7 kalite-env
     source kalite-env/bin/activate
-    git clone https://github.com/learningequality/ka-lite.git
-    cd ka-lite/
-    sed -i "" "s/os.path.join(where_am_i, 'kalitectl.py')/'kalitectl.py'/" setup.py
-    make install
-    cd ..
+
     mkdir -p ~/.kalite
-    echo "from kalite.project.settings.base import *\n\nINSTALLED_APPS += ['kalite_zim', 'compressor',]\n" >> ~/.kalite/settings.py
-    git clone https://github.com/openzim/kalite
-    cd kalite
-    pip install -e .
+    echo "from kalite.project.settings.base import *" >> ~/.kalite/settings.py
+    echo "INSTALLED_APPS += ['kalite_zim', 'compressor',]\n" >> ~/.kalite/settings.py
+    pip install django>=1.5
+    pip install pip==7.0.0
+    pip install setuptools==12.0
+    pip install ka-lite==0.15
+    pip install ka-lite-zim
 
 Export script is launched via ``kalite manage export2zim``
 
