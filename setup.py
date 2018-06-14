@@ -4,9 +4,9 @@ import os
 import sys
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
-    from distutils.core import setup
+    from distutils.core import setup, find_packages
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
@@ -25,12 +25,11 @@ setup(
     version='0.1.0',
     description='OpenZIM export command for ka-lite',
     long_description=readme + '\n\n' + doclink + '\n\n' + history,
-    author='Benjamin Bach',
-    author_email='benjamin@learningequality.org',
-    url='https://github.com/benjaoming/ka-lite-zim',
-    packages=[
-        'kalite_zim',
-    ],
+    author='Kiwix',
+    author_email='contact@kiwix.org',
+    url='https://github.com/openzim/kalite',
+    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
+    #packages=[        'kalite_zim',    ],
     package_dir={'ka-lite-zim': 'kalite_zim'},
     include_package_data=True,
     install_requires=[
@@ -46,7 +45,7 @@ setup(
     ],
     license='MIT',
     zip_safe=False,
-    keywords='ka-lite-zim',
+    keywords='ka-lite-zim zim openzim kalite',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
