@@ -18,7 +18,7 @@ RUN apt-get install -y libffi-dev
 # Install sotoki
 RUN locale-gen "en_US.UTF-8"
 
-RUN pip install django>=1.5
+RUN pip install "django>=1.5,<2"
 RUN pip install pip==7.0.0
 RUN pip install setuptools==12.0
 RUN pip install ka-lite==0.15
