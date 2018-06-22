@@ -5,3 +5,5 @@ include LICENSE
 include README.rst
 include docs/installation.rst
 include docs/usage.rst
+include *.md
+recursive-include kalite_zim *.txt *.js *.css *.html *.ttf *.svg *.eot *.ttf *.woff  *.png *.swf *.scss *.json

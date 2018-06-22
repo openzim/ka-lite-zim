@@ -14,13 +14,14 @@ RUN apt-get install -y git
 RUN apt-get install -y sed
 RUN apt-get install -y make
 RUN apt-get install -y libffi-dev
+RUN apt-get install -y libssl-dev
 
 # Install sotoki
 RUN locale-gen "en_US.UTF-8"
 
 RUN pip install "django>=1.5,<2"
 RUN pip install pip==7.0.0
-RUN pip install setuptools==12.0
+RUN pip install setuptools==18.6
 RUN pip install ka-lite==0.15
 
 RUN mkdir -p ~/.kalite
