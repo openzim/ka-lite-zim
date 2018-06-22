@@ -22,7 +22,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='ka-lite-zim',
-    version='0.1.0',
+    version='0.1.1',
     description='OpenZIM export command for ka-lite',
     long_description=readme + '\n\n' + doclink + '\n\n' + history,
     author='Kiwix',
