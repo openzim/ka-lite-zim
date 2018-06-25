@@ -47,6 +47,8 @@ Usage is available at ``kalite manage help export2zim``
 	kalite manage export2zim /data/ka-fr.zim --language=fr --tmp-dir=/data/ka-lite-zim_fr
 	docker run --name zimwriterfs -v /data:/data openzim/zimwriterfs zimwriterfs XXX
 
+`List of languages <https://ka-lite.readthedocs.io/en/latest/faq.html#how-can-i-install-a-language-pack-without-a-reliable-internet-connection>`_
+
 
 Features
 --------
