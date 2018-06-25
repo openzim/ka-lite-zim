@@ -193,8 +193,8 @@ class Command(BaseCommand):
         if not os.path.exists(zimwriterfs):
             raise CommandError("Invalid --zimwriterfs")
 
-        from kalite_zim import __name__ as base_path
-        base_path = os.path.abspath(base_path)
+        from kalite_zim import __file__ as base_path
+        base_path = os.path.abspath(os.path.dirname(base_path))
         data_path = os.path.join(base_path, 'data')
 
         # Where subtitles are found in KA Lite
