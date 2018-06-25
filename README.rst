@@ -31,11 +31,13 @@ Current code base is tied to version 0.15.1 of KA-Lite which fails to install fr
     pip install ka-lite==0.15
     pip install ka-lite-zim
 
-Export script is launched via ``kalite manage export2zim``
+Export script is launched via ``kalite manage export2zim``. 
+
+**Don't forget ``--download`` options if you haven't video in your ``~/.kalite`` cache**
 
 Usage is available at ``kalite manage help export2zim``
 
-**Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr``
+**Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr ``
 
 **Note**: if using the Docker ``zimwriterfs``, make sure to work off the same absolute path of your docker volume (/data for example) for symlinks can be resolved.
 
