@@ -25,7 +25,7 @@ Current code base is tied to version 0.15.1 of KA-Lite which fails to install fr
     mkdir -p ~/.kalite
     echo "from kalite.project.settings.base import *" >> ~/.kalite/settings.py
     echo "INSTALLED_APPS += ['kalite_zim', 'compressor',]\n" >> ~/.kalite/settings.py
-    pip install django>=1.5
+    pip install django>=1.5,<1.6
     pip install pip==7.0.0
     pip install setuptools==12.0
     pip install ka-lite==0.15
@@ -37,7 +37,7 @@ Export script is launched via ``kalite manage export2zim``.
 
 Usage is available at ``kalite manage help export2zim``
 
-**Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr ``
+**Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr``
 
 **Note**: if using the Docker ``zimwriterfs``, make sure to work off the same absolute path of your docker volume (/data for example) for symlinks can be resolved.
 
