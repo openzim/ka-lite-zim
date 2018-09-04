@@ -16,7 +16,7 @@ Quick Start
 -----------
 
 
-You should use our docker : openzim/kalite. (Without docker see at end of README.md)
+You should use our docker : openzim/kalite. (Without docker see at end of README.rst)
 ::
   docker run -v [your folder here]:/data openzim/kalite kalite manage export2zim /data/[zim name].zim [--language=[code lang]] --tmp-dir=/data/[tmp folder name] --download
 
@@ -32,8 +32,11 @@ Interact with kalite
 --------------------
 If you run docker interactively with "-ti":
   you can launch export script with ``kalite manage export2zim``
+
   Don't forget ``--download`` options if you haven't video in your ``~/.kalite`` cache
+
   Usage is available at ``kalite manage help export2zim``
+
   **Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr``
 
 
