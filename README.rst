@@ -15,39 +15,26 @@ OpenZIM export command for ka-lite.
 Quick Start
 -----------
 
-Current code base is tied to version 0.15.1 of KA-Lite which fails to install from non-prehistoric pip, so we use prehistoric pip in virtualenv. Or you can also use our docker openzim/kalite.
 
+You should use our docker : openzim/kalite. (Without docker see at end of README.md)
 ::
+  docker run -v [your folder here]:/data openzim/kalite kalite manage export2zim /data/[zim name].zim [--language=[code lang]] --tmp-dir=/data/[tmp folder name] --download
 
-    virtualenv -p /usr/bin/python2.7 kalite-env
-    source kalite-env/bin/activate
-
-    mkdir -p ~/.kalite
-    echo "from kalite.project.settings.base import *" >> ~/.kalite/settings.py
-    echo "INSTALLED_APPS += ['kalite_zim', 'compressor',]\n" >> ~/.kalite/settings.py
-    pip install django>=1.5,<1.6
-    pip install pip==7.0.0
-    pip install setuptools==12.0
-    pip install ka-lite==0.15
-    pip install ka-lite-zim
-
-Export script is launched via ``kalite manage export2zim``. 
-
-**Don't forget ``--download`` options if you haven't video in your ``~/.kalite`` cache**
-
-Usage is available at ``kalite manage help export2zim``
-
-**Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr``
-
-**Note**: if using the Docker ``zimwriterfs``, make sure to work off the same absolute path of your docker volume (/data for example) for symlinks can be resolved.
-
+For exemple :
 ::
+  docker run -v /tmp:/data openzim/kalite kalite manage export2zim /data/ka-fr.zim --language=fr --tmp-dir=/data/ka-lite-zim_fr --download
 
-	ln -s /data/ /home/user/kalite
-	kalite manage export2zim /data/ka-fr.zim --language=fr --tmp-dir=/data/ka-lite-zim_fr
-	docker run --name zimwriterfs -v /data:/data openzim/zimwriterfs zimwriterfs XXX
+You can found [code lang] here in the tab : `List of languages <https://ka-lite.readthedocs.io/en/latest/faq.html#how-can-i-install-a-language-pack-without-a-reliable-internet-connection>`
 
-`List of languages <https://ka-lite.readthedocs.io/en/latest/faq.html#how-can-i-install-a-language-pack-without-a-reliable-internet-connection>`_
+Your zim will be at : [your folder here]/[zim name].zim
+
+Interact with kalite
+--------------------
+If you run docker interactively with "-ti":
+  you can launch export script with ``kalite manage export2zim``
+  Don't forget ``--download`` options if you haven't video in your ``~/.kalite`` cache
+  Usage is available at ``kalite manage help export2zim``
+  **Beware!** Despite what usage/help says, the proper parameter order is ``zim_file`` first then options. Example: ``kalite manage export2zim ka-fr.zim --language=fr``
 
 
 Features
@@ -82,4 +69,33 @@ The export command for KA Lite is the immediate and easiest target. But we hope
 to be able to understand the OpenZIM format well enough to build an import
 command as well such that KA Lite students can interact with the data packaged
 and distributed by zim-packagers.
+
+Without docker
+--------------
+You can also use virtualenv but it's harder...because current code base is tied to version 0.15.1 of KA-Lite which fails to install from non-prehistoric pip, so we use prehistoric pip in virtualenv.
+
+::
+
+    virtualenv -p /usr/bin/python2.7 kalite-env
+    source kalite-env/bin/activate
+
+    mkdir -p ~/.kalite
+    echo "from kalite.project.settings.base import *" >> ~/.kalite/settings.py
+    echo "INSTALLED_APPS += ['kalite_zim', 'compressor',]\n" >> ~/.kalite/settings.py
+    pip install django>=1.5,<1.6
+    pip install pip==7.0.0
+    pip install setuptools==12.0
+    pip install ka-lite==0.15
+    pip install ka-lite-zim
+
+**Note**: if using the Docker ``zimwriterfs``, make sure to work off the same absolute path of your docker volume (/data for example) for symlinks can be resolved.
+See "Interact with kalite" section for how using it.
+
+::
+
+	ln -s /data/ /home/user/kalite
+	kalite manage export2zim /data/ka-fr.zim --language=fr --tmp-dir=/data/ka-lite-zim_fr
+	docker run --name zimwriterfs -v /data:/data openzim/zimwriterfs zimwriterfs XXX
+
+
 
