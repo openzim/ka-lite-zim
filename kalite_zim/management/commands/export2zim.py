@@ -61,9 +61,11 @@ def hard_link(src, dst):
     try:
         os.link(src, dst)
     except OSError as exp:
-        # Operation not supported (filesystem cannot hard link?)
-        if exp.errno == 45:
+        # Operation not supported (filesystem cannot hard link?) (45) or Link from one device to another (cross-device link) is invalid (18)
+        if exp.errno == 45 or exp.errno == 18:
             shutil.copyfile(src, dst)
+        else:
+            raise  #Raise last exception we have not catch
 
 def copy_file(src, dst):
     if src not in COPIED_FILES.keys():
