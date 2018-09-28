@@ -24,6 +24,15 @@ For exemple :
 ::
   docker run -v /tmp:/data openzim/kalite kalite manage export2zim /data/ka-fr.zim --language=fr --tmp-dir=/data/ka-lite-zim_fr --download
 
+
+IMPORTANT WHEN USING --language :
+Language are not automatically download.
+You should download them :
+::
+	$ kalite manage setup  #configure with whatever, BUT download assesssment items package
+	$ kalite manage languagepackdownload -lfr --commandline #change -lfr (french) with your codelang (-l<code lang>) (see below for code lang)
+
+And after than you can lauch kalite manage export2zim with your options
 You can found [code lang] here in the tab : `List of languages <https://ka-lite.readthedocs.io/en/latest/faq.html#how-can-i-install-a-language-pack-without-a-reliable-internet-connection>`
 
 Your zim will be at : [your folder here]/[zim name].zim
