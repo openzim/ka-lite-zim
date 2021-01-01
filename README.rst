@@ -1,3 +1,7 @@
+Note: The development of this code has been discontinued because Learning Equality
+does not maintain KA Lite anymore and has somehow replaced it with Kolibri.
+Therefore we continue our scraping effort effort with Kolibri.
+
 =============================
 ka-lite-zim
 =============================
